@@ -1,0 +1,8 @@
+- [x] Clarify Project Requirements: React web app for AndroidManifest.xml STIG checking.
+- [x] Scaffold the Project: Initial files created.
+- [ ] Customize the Project
+- [ ] Install Required Extensions
+- [ ] Compile the Project
+- [ ] Create and Run Task
+- [ ] Launch the Project
+- [ ] Ensure Documentation is Complete
