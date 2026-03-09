@@ -97,6 +97,13 @@ export default function App() {
     setIssues(checkSTIG(manifest));
   };
 
+  // ...existing code...
+  const compliantSample = `<?xml version="1.0" encoding="utf-8"?>\n<manifest xmlns:android="http://schemas.android.com/apk/res/android"\n    package="com.example.stigcompliant">\n\n    <!-- STIG-compliant settings -->\n    <uses-permission android:name="android.permission.INTERNET" />\n    <!-- No dangerous permissions -->\n    <!-- No exported components -->\n\n    <application\n        android:allowBackup=\"false\"\n        android:debuggable=\"false\"\n        android:exported=\"false\"\n        android:usesCleartextTraffic=\"false\"\n        android:networkSecurityConfig=\"@xml/network_security_config\">\n        <activity android:name=\".MainActivity\" android:exported=\"false\" />\n    </application>\n</manifest>`;
+  const noncompliantSample = `<?xml version="1.0" encoding="utf-8"?>\n<manifest xmlns:android="http://schemas.android.com/apk/res/android"\n    package="com.example.stigviolations">\n\n    <!-- Common STIG infractions -->\n    <uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\n    <uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />\n    <uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />\n    <uses-permission android:name=\"android.permission.CAMERA\" />\n    <!-- Exported activity -->\n\n    <application\n        android:allowBackup=\"true\"\n        android:debuggable=\"true\"\n        android:exported=\"true\"\n        android:usesCleartextTraffic=\"true\">\n        <activity android:name=\".MainActivity\" android:exported=\"true\" />\n    </application>\n</manifest>`;
+
+  const handleLoadCompliant = () => setManifest(compliantSample);
+  const handleLoadNoncompliant = () => setManifest(noncompliantSample);
+
   return (
     <div style={{ padding: 24, maxWidth: 800, margin: 'auto', background: '#222', color: '#fff' }}>
       <h1>STIG Checker</h1>
@@ -107,7 +114,11 @@ export default function App() {
         value={manifest}
         onChange={e => setManifest(e.target.value)}
       />
-      <button onClick={handleCheck} style={{ padding: '8px 24px', fontSize: 16 }}>Check STIG</button>
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+        <button onClick={handleCheck} style={{ padding: '8px 24px', fontSize: 16 }}>Check STIG</button>
+        <button onClick={handleLoadNoncompliant} style={{ padding: '8px 24px', fontSize: 16 }}>Load Noncompliant Sample</button>
+        <button onClick={handleLoadCompliant} style={{ padding: '8px 24px', fontSize: 16 }}>Load Compliant Sample</button>
+      </div>
       <div style={{ marginTop: 24 }}>
         <h2>STIG Issues</h2>
         {issues.length === 0 ? <p>No issues found.</p> : (
